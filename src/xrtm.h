@@ -25,7 +25,7 @@ extern "C" {
 #define POISON_WORK_ARRAYS
 */
 
-#define DO_NOT_ADD_SFI_SS			0
+#define DO_NOT_ADD_SFI_SS			1
 
 #define USE_PADE_CHECK_CONDITION		0
 
