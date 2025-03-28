@@ -21,7 +21,7 @@
 #define LAPACK_BANDED_SOLVER	1
 #define PENTADIAGANOL_SOLVER	2
 
-#define SOLVER LAPACK_GENERAL_SOLVER
+#define SOLVER LAPACK_BANDED_SOLVER
 
 
 #ifdef __cplusplus
@@ -213,7 +213,6 @@ void rtm_two_stream(int i_four, int n_derivs, int n_layers, double qx, double F_
 
      double *I_0;
      double **I_0_l;
-
 
      /*-------------------------------------------------------------------------
       *
