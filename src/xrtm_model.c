@@ -5133,6 +5133,7 @@ if (! (d->solvers & XRTM_SOLVER_TWO_STREAM)) {
 
 #ifndef USE_NEW_SFI_FOUR_CONV
           int add_single_scattering = 1;
+
           if (d->misc_input.do_not_add_sfi_ss)
                add_single_scattering = 0;
 #else
