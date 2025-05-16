@@ -20,16 +20,7 @@
 /*******************************************************************************
  *
  ******************************************************************************/
-static void ssr_up_layer(int i_layer, int n_stokes, int n_derivs,
-                         double utau, int n_umus, double *umus,
-                         double *omega, double **omega_l,
-                         double *ltau, double **ltau_l,
-                         double **P, double ***P_l,
-                         double *btran, double **btran_l,
-                         double *as_0, double **as_0_l,
-                         double *I, double **I_l,
-                         double *I_ss, double **I_ss_l,
-                         uchar **derivs_layers, work_data work) {
+static void ssr_up_layer(int i_layer, int n_stokes, int n_derivs, double utau, double *umus, int n_umus, double *omega, double **omega_l, double *ltau, double **ltau_l, double *btran, double **btran_l, double *as_0, double **as_0_l, double **P, double ***P_l, double *I, double **I_l, double *I_ss, double **I_ss_l, uchar **derivs_layers, work_data work) {
 
      int i;
      int ii;
@@ -111,21 +102,7 @@ static void ssr_up_layer(int i_layer, int n_stokes, int n_derivs,
 /*******************************************************************************
  *
  ******************************************************************************/
-void single_scattered_radiance_up(int n_stokes, int n_derivs, int n_layers,
-                                  double F_0,
-                                  int n_ulevels, int *ulevels, double *utaus,
-                                  int n_umus, double *umus,
-                                  double *omega, double **omega_l,
-                                  double *ltau, double **ltau_l,
-                                  double **P, double ***P_l,
-                                  double *btran, double **btran_l,
-                                  double *as_0, double **as_0_l,
-                                  double *atran, double **atran_l,
-                                  double *I_in, double **I_in_l,
-                                  double **I_ss, double ***I_ss_l,
-                                  int utau_output,
-                                  uchar **derivs_layers, uchar **derivs_beam,
-                                  save_tree_data save_tree, work_data work) {
+void single_scattered_radiance_up(int n_stokes, int n_derivs, int n_layers, double F_0, int n_ulevels, int *ulevels, double *utaus, double *umus, int n_umus, double *omega, double **omega_l, double *ltau, double **ltau_l, double *btran, double **btran_l, double *as_0, double **as_0_l, double *atran, double **atran_l, double **P, double ***P_l, double *I_in, double **I_in_l, double **I_ss, double ***I_ss_l, int utau_output, uchar **derivs_layers, uchar **derivs_beam, save_tree_data save_tree, work_data work) {
 
      int i;
      int ii;
@@ -242,16 +219,7 @@ void single_scattered_radiance_up(int n_stokes, int n_derivs, int n_layers,
                     if (n_derivs > 0)
                          I_ss_l2 = I_ss_l[i_ulevel];
 
-                    ssr_up_layer(i, n_stokes, n_derivs,
-                                 utaus[i_ulevel], n_umus, umus,
-                                 omega, omega_l,
-                                 ltau, ltau_l,
-                                 P, P_l,
-                                 btran, btran_l,
-                                 as_0, as_0_l,
-                                 I, I_l,
-                                 I_ss[i_ulevel], I_ss_l2,
-                                 derivs_layers, work);
+                    ssr_up_layer(i, n_stokes, n_derivs, utaus[i_ulevel], umus, n_umus, omega, omega_l, ltau, ltau_l, btran, btran_l, as_0, as_0_l, P, P_l, I, I_l, I_ss[i_ulevel], I_ss_l2, derivs_layers, work);
 
                     i_ulevel--;
                }
@@ -260,16 +228,7 @@ void single_scattered_radiance_up(int n_stokes, int n_derivs, int n_layers,
           if (save_tree.t)
                dvec_copy(save->I[i], I, n_umus * n_stokes);
 
-          ssr_up_layer(i, n_stokes, n_derivs,
-                       0., n_umus, umus,
-                       omega, omega_l,
-                       ltau, ltau_l,
-                       P, P_l,
-                       btran, btran_l,
-                       as_0, as_0_l,
-                       I, I_l,
-                       I, I_l,
-                       derivs_layers, work);
+          ssr_up_layer(i, n_stokes, n_derivs, 0., umus, n_umus, omega, omega_l, ltau, ltau_l, btran, btran_l, as_0, as_0_l, P, P_l, I, I_l, I, I_l, derivs_layers, work);
 
           if (! utau_output && i == ulevels[i_ulevel]) {
                for (j = 0; j < n_umus_v; ++j)
@@ -314,16 +273,7 @@ void single_scattered_radiance_up(int n_stokes, int n_derivs, int n_layers,
 /*******************************************************************************
  *
  ******************************************************************************/
-static void ssr_dn_layer(int i_layer, int n_stokes, int n_derivs,
-                         double utau, int n_umus, double *umus,
-                         double *omega, double **omega_l,
-                         double *ltau, double **ltau_l,
-                         double **P, double ***P_l, 
-                         double *btran, double **btran_l,
-                         double *as_0, double **as_0_l,
-                         double *I, double **I_l,
-                         double *I_ss, double **I_ss_l,
-                         uchar **derivs_layers, work_data work) {
+static void ssr_dn_layer(int i_layer, int n_stokes, int n_derivs, double utau, double *umus, int n_umus, double *omega, double **omega_l, double *ltau, double **ltau_l, double *btran, double **btran_l, double *as_0, double **as_0_l, double **P, double ***P_l, double *I, double **I_l, double *I_ss, double **I_ss_l, uchar **derivs_layers, work_data work) {
 
      int i;
      int ii;
@@ -399,21 +349,7 @@ static void ssr_dn_layer(int i_layer, int n_stokes, int n_derivs,
 /*******************************************************************************
  *
  ******************************************************************************/
-void single_scattered_radiance_dn(int n_stokes, int n_derivs, int n_layers,
-                                  double F_0,
-                                  int n_ulevels, int *ulevels, double *utaus,
-                                  int n_umus, double *umus,
-                                  double *omega, double **omega_l,
-                                  double *ltau, double **ltau_l,
-                                  double **P, double ***P_l,
-                                  double *btran, double **btran_l,
-                                  double *as_0, double **as_0_l,
-                                  double *atran, double **atran_l,
-                                  double *I_in, double **I_in_l,
-                                  double **I_ss, double ***I_ss_l,
-                                  int utau_output,
-                                  uchar **derivs_layers, uchar **derivs_beam,
-                                  save_tree_data save_tree, work_data work) {
+void single_scattered_radiance_dn(int n_stokes, int n_derivs, int n_layers, double F_0, int n_ulevels, int *ulevels, double *utaus, double *umus, int n_umus, double *omega, double **omega_l, double *ltau, double **ltau_l, double *btran, double **btran_l, double *as_0, double **as_0_l, double *atran, double **atran_l, double **P, double ***P_l, double *I_in, double **I_in_l, double **I_ss, double ***I_ss_l, int utau_output, uchar **derivs_layers, uchar **derivs_beam, save_tree_data save_tree, work_data work) {
 
      int i;
      int ii;
@@ -533,16 +469,7 @@ void single_scattered_radiance_dn(int n_stokes, int n_derivs, int n_layers,
                     if (n_derivs > 0)
                          I_ss_l2 = I_ss_l[i_ulevel];
 
-                    ssr_dn_layer(i, n_stokes, n_derivs,
-                                 utaus[i_ulevel], n_umus, umus,
-                                 omega, omega_l,
-                                 ltau, ltau_l,
-                                 P, P_l,
-                                 btran, btran_l,
-                                 as_0, as_0_l,
-                                 I, I_l,
-                                 I_ss[i_ulevel], I_ss_l2,
-                                 derivs_layers, work);
+                    ssr_dn_layer(i, n_stokes, n_derivs, utaus[i_ulevel], umus, n_umus, omega, omega_l, ltau, ltau_l, btran, btran_l, as_0, as_0_l, P, P_l, I, I_l, I_ss[i_ulevel], I_ss_l2, derivs_layers, work);
 
                     i_ulevel++;
                }
@@ -551,16 +478,7 @@ void single_scattered_radiance_dn(int n_stokes, int n_derivs, int n_layers,
           if (save_tree.t)
                dvec_copy(save->I[i], I, n_umus * n_stokes);
 
-          ssr_dn_layer(i, n_stokes, n_derivs,
-                       ltau[i], n_umus, umus,
-                       omega, omega_l,
-                       ltau, ltau_l,
-                       P, P_l,
-                       btran, btran_l,
-                       as_0, as_0_l,
-                       I, I_l,
-                       I, I_l,
-                       derivs_layers, work);
+          ssr_dn_layer(i, n_stokes, n_derivs, ltau[i], umus, n_umus, omega, omega_l, ltau, ltau_l, btran, btran_l, as_0, as_0_l, P, P_l, I, I_l, I, I_l, derivs_layers, work);
 
           if (! utau_output && i + 1 == ulevels[i_ulevel]) {
                for (j = 0; j < n_umus_v; ++j)
@@ -605,23 +523,7 @@ void single_scattered_radiance_dn(int n_stokes, int n_derivs, int n_layers,
 /*******************************************************************************
  *
  ******************************************************************************/
-void n_t_tms_correction_up(int n_stokes, int n_derivs, int n_layers,
-                           double F_0,
-                           int n_ulevels, int *ulevels, double *utaus,
-                           int n_umus, double *umus,
-                           double *omega, double **omega_l,
-                           double *omega2, double **omega2_l,
-                           double *ltau, double **ltau_l,
-                           double **P_trun, double **P_full,
-                           double ***P_trun_l, double ***P_full_l,
-                           double *btran, double **btran_l,
-                           double *as_0, double **as_0_l,
-                           double *atran, double **atran_l,
-                           double *I_in, double **I_in_l,
-                           double **I_c, double ***I_c_l,
-                           int utau_output,
-                           uchar **derivs_layers, uchar **derivs_beam,
-                           save_tree_data save_tree, work_data work) {
+void n_t_tms_correction_up(int n_stokes, int n_derivs, int n_layers, double F_0, int n_ulevels, int *ulevels, double *utaus, double *umus, int n_umus, double *omega, double **omega_l, double *omega2, double **omega2_l, double *ltau, double **ltau_l, double *btran, double **btran_l, double *as_0, double **as_0_l, double *atran, double **atran_l, double **P_trun, double **P_full, double ***P_trun_l, double ***P_full_l, double *I_in, double **I_in_l, double **I_c, double ***I_c_l, int utau_output, uchar **derivs_layers, uchar **derivs_beam, save_tree_data save_tree, work_data work) {
 
      int i;
      int j;
@@ -639,38 +541,10 @@ void n_t_tms_correction_up(int n_stokes, int n_derivs, int n_layers,
           a_l = get_work_d3(&work, n_ulevels, n_derivs, n_umus * n_stokes);
 
      if (save_tree.t) save_tree_encode_s(&save_tree, "trun");
-     single_scattered_radiance_up(n_stokes, n_derivs, n_layers,
-                                  F_0,
-                                  n_ulevels, ulevels, utaus,
-                                  n_umus, umus,
-                                  omega, omega_l,
-                                  ltau, ltau_l,
-                                  P_trun, P_trun_l,
-                                  btran, btran_l,
-                                  as_0, as_0_l,
-                                  atran, atran_l,
-                                  I_in, I_in_l,
-                                  a, a_l,
-                                  utau_output,
-                                  derivs_layers, derivs_beam,
-                                  save_tree, work);
+     single_scattered_radiance_up(n_stokes, n_derivs, n_layers, F_0, n_ulevels, ulevels, utaus, umus, n_umus, omega,  omega_l,  ltau, ltau_l, btran, btran_l, as_0, as_0_l, atran, atran_l, P_trun, P_trun_l, I_in, I_in_l, a,   a_l, utau_output, derivs_layers, derivs_beam, save_tree, work);
 
      if (save_tree.t) save_tree_recode_s(&save_tree, "_full");
-     single_scattered_radiance_up(n_stokes, n_derivs, n_layers,
-                                  F_0,
-                                  n_ulevels, ulevels, utaus,
-                                  n_umus, umus,
-                                  omega2, omega2_l,
-                                  ltau, ltau_l,
-                                  P_full, P_full_l,
-                                  btran, btran_l,
-                                  as_0, as_0_l,
-                                  atran, atran_l,
-                                  I_in, I_in_l,
-                                  I_c, I_c_l,
-                                  utau_output,
-                                  derivs_layers, derivs_beam,
-                                  save_tree, work);
+     single_scattered_radiance_up(n_stokes, n_derivs, n_layers, F_0, n_ulevels, ulevels, utaus, umus, n_umus, omega2, omega2_l, ltau, ltau_l, btran, btran_l, as_0, as_0_l, atran, atran_l, P_full, P_full_l, I_in, I_in_l, I_c, I_c_l, utau_output, derivs_layers, derivs_beam, save_tree, work);
 
      for (i = 0; i < n_ulevels; ++i) {
           dvec_sub(I_c[i], a[i], I_c[i], n_umus * n_stokes);
@@ -684,23 +558,7 @@ void n_t_tms_correction_up(int n_stokes, int n_derivs, int n_layers,
 /*******************************************************************************
  *
  ******************************************************************************/
-void n_t_tms_correction_dn(int n_stokes, int n_derivs, int n_layers,
-                           double F_0,
-                           int n_ulevels, int *ulevels, double *utaus,
-                           int n_umus, double *umus,
-                           double *omega, double **omega_l,
-                           double *omega2, double **omega2_l,
-                           double *ltau, double **ltau_l,
-                           double **P_trun, double **P_full,
-                           double ***P_trun_l, double ***P_full_l,
-                           double *btran, double **btran_l,
-                           double *as_0, double **as_0_l,
-                           double *atran, double **atran_l,
-                           double *I_in, double **I_in_l,
-                           double **I_c, double ***I_c_l,
-                           int utau_output,
-                           uchar **derivs_layers, uchar **derivs_beam,
-                           save_tree_data save_tree, work_data work) {
+void n_t_tms_correction_dn(int n_stokes, int n_derivs, int n_layers, double F_0, int n_ulevels, int *ulevels, double *utaus, double *umus, int n_umus, double *omega, double **omega_l, double *omega2, double **omega2_l, double *ltau, double **ltau_l, double *btran, double **btran_l, double *as_0, double **as_0_l, double *atran, double **atran_l, double **P_trun, double **P_full, double ***P_trun_l, double ***P_full_l, double *I_in, double **I_in_l, double **I_c, double ***I_c_l, int utau_output, uchar **derivs_layers, uchar **derivs_beam, save_tree_data save_tree, work_data work) {
 
      int i;
      int j;
@@ -718,37 +576,10 @@ void n_t_tms_correction_dn(int n_stokes, int n_derivs, int n_layers,
           a_l = get_work_d3(&work, n_ulevels, n_derivs, n_umus * n_stokes);
 
      if (save_tree.t) save_tree_encode_s(&save_tree, "trun");
-     single_scattered_radiance_dn(n_stokes, n_derivs, n_layers,
-                                  F_0,
-                                  n_ulevels, ulevels, utaus, n_umus, umus,
-                                  omega, omega_l,
-                                  ltau, ltau_l,
-                                  P_trun, P_trun_l,
-                                  btran, btran_l,
-                                  as_0, as_0_l,
-                                  atran, atran_l,
-                                  I_in, I_in_l,
-                                  a, a_l,
-                                  utau_output,
-                                  derivs_layers, derivs_beam,
-                                  save_tree, work);
+     single_scattered_radiance_dn(n_stokes, n_derivs, n_layers, F_0, n_ulevels, ulevels, utaus, umus, n_umus, omega,  omega_l,  ltau, ltau_l, btran, btran_l, as_0, as_0_l, atran, atran_l, P_trun, P_trun_l, I_in, I_in_l, a,   a_l, utau_output, derivs_layers, derivs_beam, save_tree, work);
 
      if (save_tree.t) save_tree_recode_s(&save_tree, "_full");
-     single_scattered_radiance_dn(n_stokes, n_derivs, n_layers,
-                                  F_0,
-                                  n_ulevels, ulevels, utaus,
-                                  n_umus, umus,
-                                  omega2, omega2_l,
-                                  ltau, ltau_l,
-                                  P_full, P_full_l,
-                                  btran, btran_l,
-                                  as_0, as_0_l,
-                                  atran, atran_l,
-                                  I_in, I_in_l,
-                                  I_c, I_c_l,
-                                  utau_output,
-                                  derivs_layers, derivs_beam,
-                                  save_tree, work);
+     single_scattered_radiance_dn(n_stokes, n_derivs, n_layers, F_0, n_ulevels, ulevels, utaus, umus, n_umus, omega2, omega2_l, ltau, ltau_l, btran, btran_l, as_0, as_0_l, atran, atran_l, P_full, P_full_l, I_in, I_in_l, I_c, I_c_l, utau_output, derivs_layers, derivs_beam, save_tree, work);
 
      for (i = 0; i < n_ulevels; ++i) {
           dvec_sub(I_c[i], a[i], I_c[i], n_umus * n_stokes);
