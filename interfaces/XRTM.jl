@@ -13,30 +13,57 @@ XRTM_INT_ERROR = -2147483647
 XRTM_DBL_ERROR = -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000
 
 
-function list_to_mask(list, name_to_mask)
+function options_to_mask(list)
     mask = 0
-    n = length(list)
-    for i = 1:n
-        r = @eval ccall(($name_to_mask, library_path), Cint, (Cstring, ), $(string(list[i])))
+    for i in 1:length(list)
+        r = @ccall xrtm_option_name_to_mask(list[i]::Cstring)::Cint
         if r == -1
-            error("list_to_mask()")
+            error("options_to_mask()")
         end
         mask |= r
     end
     mask
 end
 
+function solvers_to_mask(list)
+    mask = 0
+    for i in 1:length(list)
+        r = @ccall xrtm_solver_name_to_mask(list[i]::Cstring)::Cint
+        if r == -1
+            error("solvers_to_mask()")
+        end
+        mask |= r
+    end
+    mask
+end
 
-function mask_to_list(mask, index_to_mask, index_to_name)
+function solver_mask_to_list(mask)
     list = Vector{String}(undef, 0)
-    global i = 1
+    global i = 0
     while true
-        mask2 = @eval ccall(($index_to_mask, library_path), Cint, (Cint, ), $(i - 1))
+        mask2 = @ccall xrtm_solver_index_to_mask(i::Cint)::Cint
         if mask2 == -1
             break
         end
         if mask & mask2 != 0
-            name = @eval ccall(($index_to_name, library_path), Cstring, (Cint, ), $(i - 1))
+            name = @ccall xrtm_solver_index_to_name(i::Cint)::Cstring
+            push!(list, unsafe_string(name))
+        end
+        global i += 1
+    end
+    list
+end
+
+function option_mask_to_list(mask)
+    list = Vector{String}(undef, 0)
+    global i = 0
+    while true
+        mask2 = @ccall xrtm_option_index_to_mask(i::Cint)::Cint
+        if mask2 == -1
+            break
+        end
+        if mask & mask2 != 0
+            name = @ccall xrtm_option_index_to_name(i::Cint)::Cstring
             push!(list, unsafe_string(name))
         end
         global i += 1
@@ -45,12 +72,12 @@ function mask_to_list(mask, index_to_mask, index_to_name)
 end
 
 
-function list_to_array(list, name_to_value)
+function kernel_list_to_array(list)
     n = length(list)
     array = Array{Int32,1}(undef, n)
     for i = 1:n
-        r = @eval ccall(($name_to_value, library_path), Cint, (Cstring, ), $(string(list[i])))
-        if r == -1 0
+        r = @ccall "XRTM".xrtm_kernel_name_to_value(list[i]::Cstring)::Cint
+        if r == -1
             error("list_to_mask()")
         end
         array[i] = r
@@ -60,9 +87,9 @@ end
 
 
 function create(options_list::Vector{String}, solvers_list::Vector{String}, max_coef, n_quad, n_stokes, n_derivs, n_layers, n_theta_0s, n_kernel_quad, kernels_list::Vector{String}, n_out_levels, n_out_thetas)
-    options = list_to_mask(options_list, "xrtm_option_name_to_mask")
-    solvers = list_to_mask(solvers_list, "xrtm_solver_name_to_mask")
-    n_kernels, kernels = list_to_array(kernels_list, "xrtm_kernel_name_to_value")
+    options = options_to_mask(options_list)
+    solvers = solvers_to_mask(solvers_list)
+    n_kernels, kernels = kernel_list_to_array(kernels_list)
     r = ccall((:xrtm_create2, library_path), Ptr{Cvoid}, (Cint, Cint, Cint, Cint, Cint, Cint, Cint, Cint, Cint, Cint, Ptr{Cint}, Cint, Cint), options, solvers, max_coef, n_quad, n_stokes, n_derivs, n_layers, n_theta_0s, n_kernels, n_kernel_quad, kernels, n_out_levels, n_out_thetas)
     if r == C_NULL
         error("xrtm_create2()")
