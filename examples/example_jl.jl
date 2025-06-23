@@ -14,12 +14,12 @@ using Printf
 #*******************************************************************************
 # Define inputs.
 #*******************************************************************************
-options       = ["calc_derivs", "delta_m", "n_t_tms", "output_at_levels", "source_solar", "psa", "vector", "sfi"]
+options       = ["calc_derivs", "delta_m", "n_t_tms", "output_at_levels", "source_solar"]
 
-solvers       = ["two_stream"]
+solvers       = ["eig_add"]
 
 max_coef      = 34
-n_quad        = 1
+n_quad        = 8
 n_stokes      = 1
 n_derivs      = 3
 n_layers      = 4
@@ -119,10 +119,6 @@ XRTM.set_F_0(xrtm, F_0)
 XRTM.set_theta_0(xrtm, theta_0)
 XRTM.set_phi_0(xrtm, 0.)
 
-XRTM.set_planet_r(xrtm, 6310.0)
-XRTM.set_levels_z(xrtm, [50.0, 40.0, 30.0, 20.0, 10.0])
-
-
 # Set optical property inputs
 XRTM.set_ltau_n(xrtm, ltau)
 XRTM.set_omega_n(xrtm, omega)
@@ -154,7 +150,7 @@ XRTM.update_varied_layers(xrtm)
 # initial run and all the required inputs have not been initialized then XRTM
 # will print(a appropriate message and return < 0.
 #*******************************************************************************
-I_p, I_m, K_p, K_m = XRTM.radiance(xrtm, solvers[1], n_out_phis, out_phis)
+I_p, I_m, K_p, K_m = XRTM.radiance(xrtm, "eig_add", n_out_phis, out_phis)
 
 
 #*******************************************************************************

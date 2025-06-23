@@ -53,7 +53,6 @@ XRTM.dylib: xrtm_int_jl_util.o ../src/libxrtm.a ../misc/libxrtm_misc.a
 	$(CFMIX_LD) $(CFMIX_LDFLAGS) -shared -o XRTM.dylib xrtm_int_jl_util.o -all_load ../src/libxrtm.a ../misc/libxrtm_misc.a \
         $(LIBDIRS) $(LINKS)
 
-
 bindx2: write_int_def \
         xrtm_int_cpp.cpp \
         xrtm_int_f77.f xrtm_int_f77_util.c \
