@@ -4616,9 +4616,9 @@ int xrtm_set_kernel_ampfac(xrtm_data *d, int i_kernel, double ampfac) {
 
      CHECK_INDEX_RANGE(i_kernel, d->n_kernels, "i_kernel", "n_kernels", XRTM_INT_ERROR);
 
-     if (ampfac < 0. || ampfac > 1.) {
+     if (ampfac < 0.) {
           fprintf(stderr, "ERROR: invalid value for ampfac: %e, "
-                   "must be >= zero and <= one\n", ampfac);
+                   "must be >= zero\n", ampfac);
           return XRTM_INT_ERROR;
      }
 
