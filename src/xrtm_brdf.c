@@ -942,7 +942,9 @@ void brdf_build_kernel_mats(int i_offset, int n_quad1, int j_offset, int n_quad2
           f_l  = get_work1(&work, WORK_DDERIVS);
 
           for (i = 0; i < n_derivs; ++i) {
+
                if (derivs[i]) {
+                    f_l[i] = 0.0; // We should set this to 0 in case the `call_kernel_func` does not modify this..
                     init_array3_d(kernel_f_l[i], n_kernel_quad * 2 + 1, n_quad1, n_quad2, 0.);
                }
           }
